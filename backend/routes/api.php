@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,13 +16,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('register',[\App\Http\Controllers\AuthController::class,'register']);
-Route::post('login',[\App\Http\Controllers\AuthController::class,'login']);
+Route::post('register',[AuthController::class,'register']);
+Route::post('login',[AuthController::class,'login']);
 
 Route::middleware('auth:sanctum')->group(function (){
-    Route::post('user',[\App\Http\Controllers\AuthController::class,'user']);
+    Route::post('user',[AuthController::class,'user']);
+    Route::post('logout',[AuthController::class,'logout']);
+
+    Route::put('users/info',[AuthController::class,'updateInfo']);
+    Route::put('users/password',[AuthController::class,'updatePassword']);
+
+    Route::apiResource('users',UserController::class);
 });
 
 Route::get('/greeting', function () {
     return 'Hello World';
 });
+
